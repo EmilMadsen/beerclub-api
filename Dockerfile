@@ -6,4 +6,4 @@ RUN gradle build
 FROM openjdk:16-alpine AS deployment
 RUN mkdir /app
 COPY --from=build /home/gradle/build/libs/*.jar /app/springboot-app.jar
-ENTRYPOINT exec java -Dserver.port=$PORT $JAVA_OPTS -jar /app/springboot-app.jar
+CMD java -Dserver.port=$PORT $JAVA_OPTS -jar /app/springboot-app.jar
