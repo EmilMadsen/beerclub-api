@@ -1,0 +1,10 @@
+
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/brews
+    username: username
+    password: password
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
