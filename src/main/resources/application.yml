@@ -2,9 +2,9 @@
 spring:
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/brews
-    username: username
-    password: password
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
   jpa:
     database: POSTGRESQL
     show-sql: true
