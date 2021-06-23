@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 public class BrewStep {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "next_step")
@@ -37,5 +37,15 @@ public class BrewStep {
     @ManyToOne
     @JoinColumn(name="parent_id")
     private Brew brew;
+
+
+    public BrewStep() { }
+
+    public BrewStep(Brew brew, String name, Long nextStep, Integer index) {
+        this.brew = brew;
+        this.name = name;
+        this.nextStep = nextStep;
+        this.index = index;
+    }
 
 }

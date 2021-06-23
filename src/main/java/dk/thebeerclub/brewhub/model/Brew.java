@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class Brew {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "brew_name")
@@ -23,7 +24,7 @@ public class Brew {
     private String brewType;
 
     @Column(name = "created")
-    private ZonedDateTime created;
+    private ZonedDateTime created = ZonedDateTime.now(ZoneId.of("UTC"));
 
     @Column(name = "brewsters")
     private String brewsters;
@@ -54,6 +55,7 @@ public class Brew {
 
     @JsonManagedReference
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "brew")
+    @OrderBy(value = "index ASC")
     private List<BrewStep> brewSteps;
 
 
