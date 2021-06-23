@@ -8,3 +8,4 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
+    ddl-auto: update # TODO: flyway?
