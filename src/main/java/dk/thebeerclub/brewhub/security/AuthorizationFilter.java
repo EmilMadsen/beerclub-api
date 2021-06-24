@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static dk.thebeerclub.brewhub.constants.SecurityConstants.HEADER_NAME;
-import static dk.thebeerclub.brewhub.constants.SecurityConstants.KEY;
+import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.HEADER_NAME;
+import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.KEY;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 

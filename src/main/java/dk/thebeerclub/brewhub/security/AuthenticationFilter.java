@@ -22,8 +22,8 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static dk.thebeerclub.brewhub.constants.SecurityConstants.EXPIRATION_TIME;
-import static dk.thebeerclub.brewhub.constants.SecurityConstants.KEY;
+import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.EXPIRATION_TIME;
+import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.KEY;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
@@ -56,6 +56,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Claims claims = Jwts.claims().setSubject(((User) auth.getPrincipal()).getUsername());
         String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, key).setExpiration(exp).compact();
         res.addHeader("token", token);
+        res.addHeader("Access-Control-Expose-Headers","token");
 
 
     }
