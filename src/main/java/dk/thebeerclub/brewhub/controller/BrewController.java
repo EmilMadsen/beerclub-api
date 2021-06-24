@@ -53,6 +53,7 @@ public class BrewController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         try {
+            stepService.deleteByParentId(id);
             brewService.deleteById(id);
             return ResponseEntity.ok("Successfully deleted brew");
         } catch (IllegalArgumentException e) {

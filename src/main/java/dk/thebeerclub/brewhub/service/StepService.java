@@ -74,4 +74,11 @@ public class StepService {
         save(step);
 
     }
+
+    public void deleteByParentId(Long id) {
+        List<BrewStep> steps = getStepsByParentId(id);
+        for(BrewStep step : steps) {
+            brewStepRepository.delete(step);
+        }
+    }
 }
