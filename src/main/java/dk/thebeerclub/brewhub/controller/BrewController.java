@@ -1,6 +1,7 @@
 package dk.thebeerclub.brewhub.controller;
 
 import dk.thebeerclub.brewhub.model.Brew;
+import dk.thebeerclub.brewhub.model.TiltLog;
 import dk.thebeerclub.brewhub.service.BrewService;
 import dk.thebeerclub.brewhub.service.StepService;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,15 @@ public class BrewController {
     @GetMapping("/{id}")
     public ResponseEntity<Brew> findById(@PathVariable Long id) {
         Optional<Brew> optional = brewService.findById(id);
-        return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().body(null));
+        return optional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.badRequest().body(null));
+    }
+
+    @GetMapping("/{id}/tilt-logs")
+    public ResponseEntity<List<TiltLog>> findTiltLogsById(@PathVariable Long id) {
+        Optional<Brew> optional = brewService.findById(id);
+        return optional.map(brew -> ResponseEntity.ok(brew.getTiltLogList()))
+                .orElseGet(() -> ResponseEntity.badRequest().body(null));
     }
 
     @PostMapping

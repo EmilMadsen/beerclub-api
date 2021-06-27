@@ -1,7 +1,11 @@
 package dk.thebeerclub.brewhub.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.ZoneId;
@@ -58,5 +62,9 @@ public class Brew {
     @OrderBy(value = "index ASC")
     private List<BrewStep> brewSteps;
 
+    @JsonBackReference// fetch=FetchType.LAZY, didn't work. added backref instead.
+    @OneToMany(mappedBy = "parentId")
+    @OrderBy(value = "timestamp DESC")
+    private List<TiltLog> tiltLogList;
 
 }
