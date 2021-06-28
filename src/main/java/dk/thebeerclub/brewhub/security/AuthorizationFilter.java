@@ -3,6 +3,7 @@ package dk.thebeerclub.brewhub.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,13 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.HEADER_NAME;
-import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.KEY;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authManager) {
+    private final String key;
+
+    public AuthorizationFilter(AuthenticationManager authManager, String key) {
         super(authManager);
+        this.key = key;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
 
-        String header = request.getHeader(HEADER_NAME);
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header == null) {
             chain.doFilter(request, response);
             return;
@@ -42,11 +44,11 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_NAME);
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null) {
 
             Claims user = (Claims) Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(KEY.getBytes()))
+                    .setSigningKey(Keys.hmacShaKeyFor(this.key.getBytes()))
                     .build()
                     .parse(token)
                     .getBody();

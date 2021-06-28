@@ -2,6 +2,7 @@ package dk.thebeerclub.brewhub.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.thebeerclub.brewhub.model.ApplicationUser;
+import dk.thebeerclub.brewhub.security.constants.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,13 +24,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.EXPIRATION_TIME;
-import static dk.thebeerclub.brewhub.security.constants.SecurityConstants.KEY;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+    private AuthenticationManager authenticationManager;
+    private final String key;
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager, String key) {
         this.authenticationManager = authenticationManager;
+        this.key = key;
     }
 
     @Override
@@ -52,9 +55,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication auth) throws IOException, ServletException {
 
         Date exp = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
-        Key key = Keys.hmacShaKeyFor(KEY.getBytes());
+        Key key = Keys.hmacShaKeyFor(this.key.getBytes());
         Claims claims = Jwts.claims().setSubject(((User) auth.getPrincipal()).getUsername());
-        String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, key).setExpiration(exp).compact();
+        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
         res.addHeader("token", token);
         res.addHeader("Access-Control-Expose-Headers","token");
 

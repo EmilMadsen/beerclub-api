@@ -9,3 +9,13 @@ spring:
     database: POSTGRESQL
     show-sql: true
     ddl-auto: update # TODO: flyway?
+
+  # overridden by env
+jwt.key: secret-key
+
+---
+
+spring:
+  profiles: dev
+
+jwt.key: w3t6w8z$C&F)H@NcQfTjWmYr4u7x!A%D*G-KaPdSgUkXp2s5v8y/A?E(H+MbQeTh
