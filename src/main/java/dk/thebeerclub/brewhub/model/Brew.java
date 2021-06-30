@@ -64,7 +64,7 @@ public class Brew {
 
     @JsonBackReference// fetch=FetchType.LAZY, didn't work. added backref instead.
     @OneToMany(mappedBy = "parentId")
-    @OrderBy(value = "timestamp DESC")
+    @OrderBy(value = "timestamp ASC")
     private List<TiltLog> tiltLogList;
 
 }
