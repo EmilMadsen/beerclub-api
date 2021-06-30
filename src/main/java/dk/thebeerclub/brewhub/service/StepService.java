@@ -44,9 +44,14 @@ public class StepService {
                 current.setEnded(timestamp);
                 save(current);
 
-                BrewStep next = brewStepRepository.getById(current.getNextStep());
-                next.setStarted(timestamp);
-                return save(next);
+                if (null != current.getNextStep()) {
+                    BrewStep next = brewStepRepository.getById(current.getNextStep());
+                    next.setStarted(timestamp);
+                    return save(next);
+                }
+
+                return current;
+
             }
         }
         return null;
