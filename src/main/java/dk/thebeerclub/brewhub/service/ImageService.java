@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -46,8 +47,6 @@ public class ImageService {
 
         ObjectWriteResponse response = minioClient.putObject(obj);
 
-        int zero = 0;
-
         return minioEndpoint + "/" + minioBucketName + objectPath;
     }
 
@@ -55,5 +54,14 @@ public class ImageService {
         String uuid = UUID.randomUUID().toString();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         return "/" + brewId + "/" + uuid + extension;
+    }
+
+    public boolean delete(String imageId) {
+        Optional<Image> optional = imageRepository.findById(Long.valueOf(imageId));
+        if (optional.isEmpty()) {
+            return false;
+        }
+        imageRepository.delete(optional.get());
+        return true;
     }
 }

@@ -5,6 +5,8 @@ import dk.thebeerclub.brewhub.model.Image;
 import dk.thebeerclub.brewhub.service.BrewService;
 import dk.thebeerclub.brewhub.service.ImageService;
 import io.minio.errors.MinioException;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,13 +27,13 @@ public class ImageController {
         this.brewService = brewService;
     }
 
-    @PostMapping("/upload/brew/{brewId}")
-    public Image upload(@RequestParam("file") MultipartFile file, @PathVariable String brewId) {
+    @PostMapping(value = "/upload/brew/{brewId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Image upload(@RequestParam("image") MultipartFile file, @PathVariable String brewId) {
         return handleUpload(file, brewId, null);
     }
 
     @PostMapping("/upload/brew/{brewId}/step/{stepId}")
-    public Image upload(@RequestParam("file") MultipartFile file, @PathVariable String brewId, @PathVariable String stepId) {
+    public Image upload(@RequestParam("image") MultipartFile file, @PathVariable String brewId, @PathVariable String stepId) {
         return handleUpload(file, brewId, stepId);
     }
 
@@ -53,6 +55,16 @@ public class ImageController {
         } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             throw new IllegalStateException("The file cannot be read", e);
         }
+    }
+
+    @DeleteMapping("/{imageId}")
+    public ResponseEntity<String> deleteImage(@PathVariable String imageId) {
+        if (imageService.delete(imageId)) {
+            return ResponseEntity.ok("success");
+        } else {
+            return ResponseEntity.badRequest().body("unable to delete image");
+        }
+
     }
 
 }
