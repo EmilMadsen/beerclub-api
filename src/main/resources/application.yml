@@ -9,9 +9,16 @@ spring:
     database: POSTGRESQL
     show-sql: true
     ddl-auto: update # TODO: flyway?
+    hibernate.ddl-auto: update
 
   # overridden by env
 jwt.key: secret-key
+
+minio:
+  endpoint: http://localhost:9000
+  accesskey: accesskey
+  secretkey: secretkey
+  bucketname: beerclub
 
 ---
 

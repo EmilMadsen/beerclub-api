@@ -58,9 +58,14 @@ public class Brew {
     private Integer targetEndGravity;
 
     @JsonManagedReference
-    @OneToMany(fetch=FetchType.EAGER, mappedBy = "brew")
+    @OneToMany(mappedBy = "brew")
     @OrderBy(value = "index ASC")
     private List<BrewStep> brewSteps;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "brew")
+    @OrderBy(value = "id ASC")
+    private List<Image> images;
 
     @JsonBackReference// fetch=FetchType.LAZY, didn't work. added backref instead.
     @OneToMany(mappedBy = "parentId")
