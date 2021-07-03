@@ -4,7 +4,7 @@ import dk.thebeerclub.brewhub.model.Brew;
 import dk.thebeerclub.brewhub.model.Image;
 import dk.thebeerclub.brewhub.service.BrewService;
 import dk.thebeerclub.brewhub.service.ImageService;
-import io.minio.errors.MinioException;
+//import io.minio.errors.MinioException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +25,11 @@ public class ImageController {
     public ImageController(ImageService imageService, BrewService brewService) {
         this.imageService = imageService;
         this.brewService = brewService;
+    }
+
+    @GetMapping("/tst")
+    public void tst() {
+        imageService.tst();
     }
 
     @PostMapping(value = "/upload/brew/{brewId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -52,7 +57,7 @@ public class ImageController {
             image.setStepId(stepId == null ? null : Long.valueOf(stepId));
             return imageService.save(image);
 
-        } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+        } catch (Exception e) {
             throw new IllegalStateException("The file cannot be read", e);
         }
     }
