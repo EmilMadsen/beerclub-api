@@ -48,7 +48,7 @@ public class ImageController {
             String imageUrl = imageService.upload(file, brewId);
             Image image = new Image();
             image.setBrew(optional.get());
-            image.setImageUrl(imageUrl);
+            image.setImageUrl(imageUrl.replace(":19009", "")); // TODO: remove replace, once minio cert issues has been resolved.
             image.setStepId(stepId == null ? null : Long.valueOf(stepId));
             return imageService.save(image);
 
