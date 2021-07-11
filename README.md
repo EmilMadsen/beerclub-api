@@ -1,5 +1,7 @@
 # beerclub-api
 
+API for managing our brew data.   
+
 https://github.com/EmilMadsen/thebeerhub-api rewritten in java/spring boot instead of flask/python
 
 setup docker minio server for local dev:  (image upload)  
