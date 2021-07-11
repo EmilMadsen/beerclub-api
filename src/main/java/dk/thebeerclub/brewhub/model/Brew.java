@@ -45,6 +45,9 @@ public class Brew {
     @Column(name = "tilt_url")
     private String tiltUrl;
 
+    @Column(name = "tilt_ended")
+    private ZonedDateTime tiltEnded;
+
     @Column(name = "target_start_gravity")
     private Integer targetStartGravity;
 
